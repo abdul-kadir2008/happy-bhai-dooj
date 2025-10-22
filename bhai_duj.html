@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Bhai Dooj — Ultimate Gift Box</title>
+<style>
+  :root{
+    --card-w:460px; --card-h:640px;
+    --bg1:#061025; --bg2:#071a3a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; min-height:100vh; display:flex; justify-content:center; align-items:center;
+    background: radial-gradient(1200px 800px at 10% 10%, rgba(255,200,60,0.03), transparent),
+                linear-gradient(180deg, var(--bg1), var(--bg2));
+    font-family:"Segoe UI", sans-serif; color:#fff;
+  }
+  .stage{
+    width:var(--card-w); height:var(--card-h); border-radius:18px; padding:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow:0 20px 60px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    position:relative; overflow:hidden; border:1px solid rgba(255,255,255,0.04);
+  }
+  .header{display:flex; justify-content:space-between; margin-bottom:6px;}
+  .title{font-size:18px;font-weight:700;}
+  .subtitle{font-size:12px;opacity:0.8;}
+  .sky{position:relative;height:520px;margin-top:8px;border-radius:12px;overflow:hidden;
+       background: radial-gradient(600px 200px at 80% 10%, rgba(255,160,50,0.02), transparent),
+                   linear-gradient(180deg,#071028 0%, #021024 70%);
+       display:flex; align-items:flex-end; justify-content:center;}
+  .stars{position:absolute; inset:0; background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.9), transparent 60%),
+    radial-gradient(1px 1px at 42% 8%, rgba(255,255,255,0.85), transparent 60%),
+    radial-gradient(1px 1px at 76% 25%, rgba(255,255,255,0.9), transparent 60%),
+    radial-gradient(1px 1px at 28% 45%, rgba(255,255,255,0.7), transparent 60%),
+    radial-gradient(1px 1px at 88% 70%, rgba(255,255,255,0.7), transparent 60%),
+    radial-gradient(1px 1px at 12% 85%, rgba(255,255,255,0.6), transparent 60%);
+    opacity:0.95; animation: twinkle 6s linear infinite;}
+  @keyframes twinkle{0%{opacity:0.7}50%{opacity:1}100%{opacity:0.7}}
+  .horizon{position:absolute; left:0; right:0; bottom:0; height:72px;
+           background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.8));}
+  .box-wrap{position:relative; width:170px; height:170px; transform-style:preserve-3d; perspective:900px; margin-bottom:28px; z-index:6;}
+  .gift-box{position:absolute; left:50%; transform:translateX(-50%); width:170px; height:110px; border-radius:10px; background:linear-gradient(180deg,#d9534f,#b2222b); box-shadow:0 18px 40px rgba(0,0,0,0.6),0 2px 6px rgba(0,0,0,0.4) inset; transform-origin:50% 100%; transition:transform 0.45s cubic-bezier(.2,.9,.3,1); display:flex; align-items:center; justify-content:center; overflow:visible;}
+  .lid{position:absolute; left:50%; top:-36px; transform:translateX(-50%) rotateX(0deg); width:220px; height:60px; border-radius:12px; background:linear-gradient(180deg,#ff6b35,#d94b2b); box-shadow:0 10px 24px rgba(0,0,0,0.5); transform-origin:50% 100%; transition:transform 0.6s cubic-bezier(.2,.9,.3,1); z-index:8;}
+  .ribbon-vertical{position:absolute; left:50%; top:8px; transform:translateX(-50%); width:22px; height:160px; background:linear-gradient(180deg,#fdd835,#ff8f00); border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.3) inset; z-index:9;}
+  .ribbon-horizontal{position:absolute; left:50%; top:40px; transform:translateX(-50%); width:220px; height:18px; background:linear-gradient(90deg,#fdd835,#ff8f00); border-radius:6px; z-index:9;}
+  .bow{position:absolute; left:50%; top:-22px; transform:translateX(-50%); width:56px; height:40px; z-index:10;}
+  .bow::before,.bow::after{content:""; position:absolute; width:28px; height:36px; background:linear-gradient(90deg,#ffd54f,#ff7043); border-radius:14px 8px 8px 14px; transform-origin:center; box-shadow:0 2px 6px rgba(0,0,0,0.25);}
+  .bow::before{transform:translateX(-14px) rotate(-20deg); left:0;}
+  .bow::after{transform:translateX(14px) rotate(20deg); right:0;}
+  .launch-btn{position:relative; z-index:11; margin-top:36px; cursor:pointer; border:none; padding:12px 18px; border-radius:999px; background:linear-gradient(90deg,#ffd166,#ff7a00); color:#071428; font-weight:700; box-shadow:0 8px 20px rgba(255,120,40,0.15); transform:translateY(0); transition:transform .12s ease;}
+  .launch-btn:active{transform:translateY(2px) scale(.995);}
+  .box-open .lid{transform:translateX(-50%) rotateX(-55deg) translateY(-6px);}
+  .box-open .gift-box{transform:translateX(-50%) translateY(6px) scale(0.98);}
+  .rockets-layer{position:absolute; inset:0; pointer-events:none; z-index:7;}
+  .rocket{position:absolute; width:34px; height:90px; left:50%; transform:translateX(-50%); bottom:120px; transform-origin:50% 100%; pointer-events:none; z-index:7; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));}
+  .rocket svg{width:100%; height:100%; display:block;}
+  @keyframes rocketUp{0%{transform:translateX(-50%) translateY(0) rotate(0deg); opacity:1;}70%{transform:translateX(-50%) translateY(-420px) rotate(0deg); opacity:1;}100%{transform:translateX(-50%) translateY(-520px) rotate(0deg); opacity:0;}}
+  .message{position:absolute; top:22%; left:50%; transform:translateX(-50%); font-size:34px; font-weight:800; letter-spacing:0.6px; opacity:0; z-index:12; text-shadow:0 8px 28px rgba(0,0,0,0.6); pointer-events:none;}
+  .message.show{animation: msgIn .8s cubic-bezier(.2,.9,.3,1) forwards;}
+  @keyframes msgIn{0%{opacity:0; transform:translateX(-50%) translateY(10px) scale(.98)}60%{opacity:1; transform:translateX(-50%) translateY(-8px) scale(1.03)}100%{opacity:1; transform:translateX(-50%) translateY(0) scale(1)}}
+  canvas.fireworks{position:absolute; inset:0; z-index:9; pointer-events:none;}
+  .help{position:absolute; left:18px; right:18px; bottom:12px; font-size:12px; color:rgba(255,255,255,0.75); display:flex; justify-content:space-between; align-items:center;}
+  .reset{background:transparent; border:1px solid rgba(255,255,255,0.06); padding:6px 10px; border-radius:8px; color:rgba(255,255,255,0.95); cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="header">
+    <div><div class="title">Bhai Dooj Gift Box</div><div class="subtitle">Click jitni baar rocket launch!</div></div>
+    <div style="font-size:12px; opacity:0.9">[Sofia]</div>
+  </div>
+  <div class="sky" id="sky">
+    <div class="stars"></div>
+    <div class="rockets-layer" id="rocketsLayer"></div>
+    <div class="box-wrap" id="boxWrap">
+      <div class="lid" id="lid"></div>
+      <div class="gift-box" id="giftBox" tabindex="0">
+        <div class="ribbon-vertical"></div>
+        <div class="ribbon-horizontal"></div>
+        <div class="bow"></div>
+        <button class="launch-btn" id="launchBtn">Launch Rocket</button>
+      </div>
+    </div>
+    <canvas class="fireworks" id="fwCanvas" width="800" height="800"></canvas>
+    <div class="message" id="message">Happy Bhai Dooj 🎉</div>
+    <div class="horizon"></div>
+  </div>
+  <div class="help">
+    <div>Click the button on gift box to launch rockets</div>
+    <div><button class="reset" id="resetBtn">Reset</button></div>
+  </div>
+</div>
+<script>
+// ------------ Canvas Setup ------------
+const sky = document.getElementById('sky'), canvas=document.getElementById('fwCanvas'), ctx=canvas.getContext('2d');
+const rocketsLayer=document.getElementById('rocketsLayer'), launchBtn=document.getElementById('launchBtn');
+const giftBox=document.getElementById('giftBox'), lid=document.getElementById('lid'), boxWrap=document.getElementById('boxWrap');
+const message=document.getElementById('message'), resetBtn=document.getElementById('resetBtn');
+function fitCanvas(){
+  const r=sky.getBoundingClientRect();
+  canvas.width=r.width*devicePixelRatio; canvas.height=r.height*devicePixelRatio;
+  canvas.style.width=r.width+'px'; canvas.style.height=r.height+'px';
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+}
+window.addEventListener('resize',fitCanvas);
+fitCanvas();
+
+// ------------ Particles for fireworks ------------
+class Particle{
+  constructor(x,y,vx,vy,life,color,size){this.x=x;this.y=y;this.vx=vx;this.vy=vy;this.life=life;this.age=0;this.color=color;this.size=size;}
+  step(dt){this.x+=this.vx*dt;this.y+=this.vy*dt;this.vy+=120*dt;this.vx*=0.998;this.vy*=0.998;this.age+=dt;}
+  draw(ctx){const t=Math.max(0,1-this.age/this.life);ctx.globalAlpha=t;ctx.beginPath();ctx.fillStyle=this.color;ctx.arc(this.x,this.y,Math.max(0.6,this.size*t),0,Math.PI*2);ctx.fill();}
+}
+let particles=[], raf=null, lastT=0;
+function spawnFireworkAt(cx,cy){
+  const palettes=[["#ffd166","#ff7a00","#ff4d6d"],["#8be9ff","#7bd389","#ffd1f0"],["#fff2a6","#ff9a3c","#ff5a72"]];
+  const pal=palettes[Math.floor(Math.random()*palettes.length)]; const n=40+Math.floor(Math.random()*80);
+  for(let i=0;i<n;i++){const angle=Math.random()*Math.PI*2,speed=80+Math.random()*260;const vx=Math.cos(angle)*speed,vy=Math.sin(angle)*speed,life=0.8+Math.random()*1.6,size=2+Math.random()*3,color=pal[Math.floor(Math.random()*pal.length)];particles.push(new Particle(cx,cy,vx,vy,life,color,size));}
+  for(let i=0;i<14;i++){const angle=Math.random()*Math.PI*2,speed=40+Math.random()*80;particles.push(new Particle(cx,cy,Math.cos(angle)*speed,Math.sin(angle)*speed,0.6+Math.random()*0.6,"#fff",1+Math.random()*1.6));}
+}
+function animate(t){
+  if(!lastT) lastT=t; const dt=Math.min(0.033,(t-lastT)/1000); lastT=t;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let i=particles.length-1;i>=0;i--){particles[i].step(dt); if(particles[i].age>particles[i].life) particles.splice(i,1);}
+  for(const p of particles)p.draw(ctx);
+  if(particles.length>0) raf=requestAnimationFrame(animate); else{raf=null; lastT=0;}
+}
+
+// ------------ Audio ------------
+const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+function playBoom(){
+  const bufferSize=audioCtx.sampleRate*0.3; const buffer=audioCtx.createBuffer(1,bufferSize,audioCtx.sampleRate);
+  const data=buffer.getChannelData(0); for(let i=0;i<bufferSize;i++) data[i]=(Math.random()*2-1)*Math.exp(-3*(i/bufferSize));
+  const noise=audioCtx.createBufferSource(); noise.buffer=buffer;
+  const bp=audioCtx.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=1200+Math.random()*800; bp.Q.value=0.7+Math.random()*2;
+  const osc=audioCtx.createOscillator(); osc.type="sine"; osc.frequency.setValueAtTime(120+Math.random()*40,audioCtx.currentTime);
+  const oscGain=audioCtx.createGain(); oscGain.gain.setValueAtTime(0.0001,audioCtx.currentTime); oscGain.gain.exponentialRampToValueAtTime(0.6,audioCtx.currentTime+0.02); oscGain.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.28);
+  const masterGain=audioCtx.createGain(); masterGain.gain.setValueAtTime(0.9,audioCtx.currentTime); masterGain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.4);
+  noise.connect(bp); bp.connect(masterGain); osc.connect(oscGain); oscGain.connect(masterGain); masterGain.connect(audioCtx.destination);
+  noise.start(); noise.stop(audioCtx.currentTime+0.35); osc.start(); osc.stop(audioCtx.currentTime+0.35);
+}
+
+// ------------ Rocket launch ------------
+let clickCount=0, lidOpened=false;
+function openLidOnce(){if(!lidOpened){boxWrap.classList.add('box-open'); lidOpened=true;}}
+function createAndLaunchRocket(){
+  openLidOnce(); clickCount++;
+  const r=document.createElement('div'); r.className='rocket';
+  const jitter=(Math.random()*80-40); const boxRect=giftBox.getBoundingClientRect(), skyRect=sky.getBoundingClientRect();
+  const startX=boxRect.left+boxRect.width/2-skyRect.left+jitter;
+  r.style.left=startX+'px'; r.style.bottom='120px';
+  // random rocket color
+  const colors=['#ff4d4d','#ffcc00','#00ffcc','#ff66ff','#66ccff']; const c=colors[Math.floor(Math.random()*colors.length)];
+  r.innerHTML=`<svg viewBox="0 0 40 110"><g transform="translate(2,4)">
+    <ellipse cx="18" cy="18" rx="12" ry="16" fill="${c}" stroke="#ffd166" stroke-width="0.8"/>
+    <rect x="6" y="34" width="24" height="58" rx="6" fill="${c}" stroke="#f2c08c" stroke-width="0.7"/>
+    <path d="M18 0 L30 34 L6 34 Z" fill="#ff6b35"/>
+    <path d="M8 80 L0 92 L10 96 Z" fill="#ff7a00"/>
+    <path d="M32 80 L40 92 L30 96 Z" fill="#ff7a00"/>
+    <circle cx="18" cy="48" r="6" fill="#0b2b4a" stroke="#92b6d9" stroke-width="0.7"/>
+    <polygon points="18,92 15,110 21,110" fill="orange" opacity="0.7"/>
+    </g></svg>`;
+  rocketsLayer.appendChild(r);
+  r.style.transition=`transform 1.9s cubic-bezier(.2,.9,.3,1), opacity .3s linear`; void r.offsetWidth;
+  r.style.transform='translateX(-50%) translateY(-520px) rotate(0deg)';
+  setTimeout(()=>{
+    r.remove();
+    spawnFireworkAt(startX,skyRect.height*0.2+Math.random()*100); if(!raf) raf=requestAnimationFrame(animate); playBoom();
+    message.classList.add('show'); setTimeout(()=>{message.classList.remove('show')},1600);
+  },1900);
+}
+
+// ------------ Event Listeners ------------
+launchBtn.addEventListener('click',createAndLaunchRocket);
+resetBtn.addEventListener('click',()=>{
+  lidOpened=false; clickCount=0; boxWrap.classList.remove('box-open'); particles=[]; if(raf) cancelAnimationFrame(raf); raf=null; lastT=0;
+});
+
+// Optional: open lid on hover
+giftBox.addEventListener('mouseenter',()=>{openLidOnce();});
+</script>
+</body>
+</html>
